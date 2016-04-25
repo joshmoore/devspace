@@ -1,0 +1,12 @@
+#!/bin/bash
+
+shift; # drop -sSL
+target="${@: -1}"
+prefetch=/tmp/$(basename "$target")
+if test -e "$prefetch"
+then
+	echo "$prefetch" exists -- copying
+        cp "$prefetch" "$target"
+else
+	/usr/bin/curl --tlsv1 --retry 5 --verbose -SL "$@"
+fi
